@@ -70,6 +70,12 @@ def delete_photo(
     if photo.uploaded_by_user_id != current_user.id:
         raise HTTPException(403, "You can only delete your own photos")
 
+    # Delete all votes referencing this photo first (FK constraint fix)
+    from app.models.vote import Vote
+    db.query(Vote).filter(
+        (Vote.winner_photo_id == photo_id) | (Vote.loser_photo_id == photo_id)
+    ).delete(synchronize_session=False)
+
     delete_image(photo.cloudinary_public_id)
     db.delete(photo)
     db.commit()
