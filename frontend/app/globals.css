@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #030712;
+}
+
+.card-swipe {
+  touch-action: none;
+  user-select: none;
+}
